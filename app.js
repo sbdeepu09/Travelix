@@ -6,8 +6,11 @@ const db = require('./config/connection')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+var hotelRouter = require('./routes/hotel')
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
+const session = require('express-session')
 
 var app = express();
 
@@ -21,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({secret:"secret key",resave: false,saveUninitialized: true,cookie:{maxAge:600000}}))
 
 //Database connection
 db.connect((err) => {
@@ -30,6 +34,7 @@ db.connect((err) => {
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
+app.use('/hotel',hotelRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
