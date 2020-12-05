@@ -36,4 +36,8 @@ router.post('/add-hotel',(req,res)=>{
   })
 })
 
+router.get('/logout',(req,res)=>{
+  req.session.admin= null
+  res.redirect('/admin')
+})
 module.exports = router;

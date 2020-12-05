@@ -1,5 +1,6 @@
 const db = require('../config/connection')
 const collection = require('../config/collection')
+const generator = require('generate-password')
 
 module.exports = {
     adminLogin:(loginData)=>{
@@ -28,6 +29,7 @@ module.exports = {
     createHotelLogin:(hotelData)=>{
         return new Promise((resolve,reject)=>{
             let hotelObject=hotelData
+            hotelObject.password=generator.generate({length:10,numbers:true})
             hotelObject.location=""
             hotelObject.starRating=""
             hotelObject.contactInfo=""
