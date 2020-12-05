@@ -1,6 +1,7 @@
 const db = require('../config/connection')
 const collection = require('../config/collection')
 const generator = require('generate-password')
+const nodemailer = require('nodemailer')
 
 module.exports = {
     adminLogin:(loginData)=>{
@@ -27,7 +28,7 @@ module.exports = {
         })
     },
     createHotelLogin:(hotelData)=>{
-        return new Promise((resolve,reject)=>{
+        return new Promise(async (resolve,reject)=>{
             let hotelObject=hotelData
             hotelObject.password=generator.generate({length:10,numbers:true})
             hotelObject.location=""
@@ -36,10 +37,32 @@ module.exports = {
             hotelObject.rooms=""
 
             db.get().collection(collection.HOTEL_COLLECTION).insertOne(hotelObject).then((data)=>{
-                resolve(data.ops[0]._id);
+                resolve(data.ops[0]);
             })
 
+           let tranporter  = nodemailer.createTransport({
+               service:'gmail',
+               auth:{
+                   user:process.env.EMAIL,
+                   pass:process.env.PASSWORD
+               }
+           })
 
+           let mailOptions = {
+               from: 'mail.deepak.2000@gmail.com',
+               to: hotelObject.username,
+               subject: 'Travelix Login Details of your Hotel',
+               text: 'Username:-'+hotelObject.username+', Password:'+hotelObject.password
+           }
+
+           tranporter.sendMail(mailOptions,(err,info)=>{
+               if(err){
+                   console.log(err);
+               }
+               else{
+                   console.log('Mail Sent:'+info.response);
+               }
+           })
         })
     },
     getAllHotels:()=>{

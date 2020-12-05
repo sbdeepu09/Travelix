@@ -7,9 +7,11 @@ const hotelHelpers = require('../helpers/hotel-helpers')
 router.get('/', function(req, res, next) {
   if(req.session.hotel)
   {
-      res.render('hotel/home')
+      hotel=req.session.hotel
+      res.render('hotel/home',{hotel})
   }else{
-    res.render('hotel/login');
+    res.render('hotel/login',{loginErr:req.session.hotelLoginErr});
+    req.session.hotelLoginErr=false
   }
 });
 
@@ -40,5 +42,7 @@ router.get('/profile/:id',(req,res)=>{
     })
     
 })
+
+
 
 module.exports = router;
