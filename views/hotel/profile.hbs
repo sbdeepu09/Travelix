@@ -1,9 +1,40 @@
 <div class="container">
-    <h1 class="text-center mt-2">Hotel Profile</h1>
-    <div class="row">
+    <h1 class="text-center mt-2" style="font-size: 3vw;">Hotel Profile</h1>
+    <div class="row profile-card">
         <div class="col-md-6">
-            
+            <table class="table table-borderless mt-5" style="font-size: 1.2vw;">
+                <tbody>
+                    <tr>
+                        <td>Hotel Name</td>
+                        <td>{{hotel.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td>{{hotel.username}}</td>
+                    </tr>
+                    <tr>
+                        <td>Locate City</td>
+                        <td>{{hotel.city}}</td>
+                    </tr>
+                    <tr>
+                        <td>Address of Hotel</td>
+                        <td>{{hotel.address}}</td>
+                    </tr>
+                    <tr>
+                        <td>Contact Number</td>
+                        <td>{{hotel.contactNo}}</td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
+        <div class="col-md-6">
+            
+        </div>
+        <a href="/hotel/edit-profile" class="btn btn-primary">Edit Profile</a>
     </div>
 </div>
+
+<style>
+
+</style>

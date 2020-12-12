@@ -34,6 +34,7 @@ router.post('/',(req,res)=>{
 
 router.get('/hotels',(req,res)=>{
   adminHelpers.getAllHotels().then((hotels)=>{
+    console.log(hotels);
     res.render('admin/hotels',{admin:true,hotels})
   })
 })

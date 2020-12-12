@@ -3,8 +3,10 @@ var express = require('express');
 var path = require('path');
 var hbs = require('express-handlebars')
 const db = require('./config/connection')
+const fileUpload = require('express-fileupload')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const passport = require('passport')
 
 
 var hotelRouter = require('./routes/hotel')
@@ -23,18 +25,26 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload())
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({secret:"secret key",resave: false,saveUninitialized: true,cookie:{maxAge:600000}}))
 
 //Database connection
 db.connect((err) => {
   if(err) console.log('Connection error'+err)
   else  console.log('Databse connected')
-})   
+})  
+
+// passport js middleware
+app.use(passport.initialize())
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 app.use('/hotel',hotelRouter)
+
+// passport js middleware
+app.use(passport.initialize())
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

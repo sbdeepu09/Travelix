@@ -35,14 +35,32 @@ router.get('/logout',(req,res)=>{
     res.redirect('/hotel')
 })
 
-router.get('/profile/:id',(req,res)=>{
-    hotelHelpers.getProfile(req.params.id).then((hotel)=>{
-        console.log(hotel);
+router.get('/profile',(req,res)=>{
+  let hotelId=req.session.hotel._id
+    hotelHelpers.getProfile(hotelId).then((hotel)=>{
         res.render('hotel/profile',{hotel})
     })
     
 })
 
+router.get('/edit-profile',(req,res)=>{
+  let hotelId=req.session.hotel._id
+  hotelHelpers.getProfile(hotelId).then((hotel)=>{
+    res.render('hotel/edit-profile',{hotel})
+  })
+})
+
+router.post('/edit-profile/:id',(req,res)=>{
+  hotelHelpers.editProfile(req.params.id,req.body).then((id)=>{
+    let image = req.files.image
+    image.mv('./public/images/hotel-images/'+id+'.jpg',(err,done) => {
+      if(!err)
+        res.redirect('/hotel/profile')
+      else
+        console.log(err)
+    })
+  })
+})
 
 
 module.exports = router;

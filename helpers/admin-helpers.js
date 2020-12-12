@@ -1,3 +1,4 @@
+require('dotenv').config()
 const db = require('../config/connection')
 const collection = require('../config/collection')
 const generator = require('generate-password')
@@ -31,9 +32,9 @@ module.exports = {
         return new Promise(async (resolve,reject)=>{
             let hotelObject=hotelData
             hotelObject.password=generator.generate({length:10,numbers:true})
-            hotelObject.location=""
+            hotelObject.address=""
+            hotelObject.contactNo=""
             hotelObject.starRating=""
-            hotelObject.contactInfo=""
             hotelObject.rooms=""
 
             db.get().collection(collection.HOTEL_COLLECTION).insertOne(hotelObject).then((data)=>{
@@ -44,7 +45,7 @@ module.exports = {
                service:'gmail',
                auth:{
                    user:process.env.EMAIL,
-                   pass:process.env.PASSWORD
+                   pass:process.env.PASS
                }
            })
 
